@@ -176,6 +176,7 @@ class DatePickerModel extends CommonPickerModel {
     this.middleList = List.generate(maxMonth - minMonth + 1, (int index) {
       return '${_localeMonth(minMonth + index)}';
     });
+    this.middleList.add("Optional");
   }
 
   void _fillRightLists() {
@@ -184,6 +185,7 @@ class DatePickerModel extends CommonPickerModel {
     this.rightList = List.generate(maxDay - minDay + 1, (int index) {
       return '${minDay + index}${_localeDay()}';
     });
+    this.rightList.add("Optional");
   }
 
   @override
