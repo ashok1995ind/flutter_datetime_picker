@@ -487,9 +487,32 @@ class _DatePickerState extends State<_DatePickerComponent> {
                 style: theme.cancelStyle,
               ),
               onPressed: () {
-                Navigator.pop(context);
-                if (widget.route.onCancel != null) {
-                  widget.route.onCancel();
+                print("${widget.pickerModel.finalTime()}");
+                var dt = DateTime(widget.pickerModel.finalTime().year, widget.pickerModel.finalTime().month + 1, 0).day;
+                if(widget.pickerModel.middleStringAtIndex(widget.pickerModel.currentMiddleIndex())=="Optional" && widget.pickerModel.rightStringAtIndex(widget.pickerModel.currentRightIndex())=="Optional"){
+                  Navigator.pop(context, DateTime.parse("${widget.pickerModel.finalTime().year}-12-31"));
+                  if (widget.route.onConfirm != null) {
+                    widget.route.onConfirm(DateTime.parse("${widget.pickerModel.finalTime().year}-12-31"));
+                  }
+
+                }else if(widget.pickerModel.middleStringAtIndex(widget.pickerModel.currentMiddleIndex())=="Optional" && widget.pickerModel.rightStringAtIndex(widget.pickerModel.currentRightIndex())!="Optional"){
+                  Navigator.pop(context, DateTime.parse("${widget.pickerModel.finalTime().year}-12-${widget.pickerModel.finalTime().day}"));
+                  if (widget.route.onConfirm != null) {
+                    widget.route.onConfirm(DateTime.parse("${widget.pickerModel.finalTime().year}-12-${widget.pickerModel.finalTime().day}"));
+                  }
+                }else if(widget.pickerModel.middleStringAtIndex(widget.pickerModel.currentMiddleIndex())!="Optional" && widget.pickerModel.rightStringAtIndex(widget.pickerModel.currentRightIndex())=="Optional"){
+                  widget.pickerModel.setMiddleIndex(0);
+                  widget.pickerModel.setRightIndex(0);
+                  Navigator.pop(context, DateTime.parse("${widget.pickerModel.finalTime().year}-${widget.pickerModel.finalTime().month}-${dt}"));
+                  if (widget.route.onConfirm != null) {
+                    widget.route.onConfirm(DateTime.parse("${widget.pickerModel.finalTime().year}-${widget.pickerModel.finalTime().month}-${dt}"));
+                  }
+                }
+                else{
+                  Navigator.pop(context, widget.pickerModel.finalTime());
+                  if (widget.route.onConfirm != null) {
+                    widget.route.onConfirm(widget.pickerModel.finalTime());
+                  }
                 }
               },
             ),
